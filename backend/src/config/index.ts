@@ -10,6 +10,7 @@ export type ConfigObject = {
   nasa: {
     apiKey: string;
     apiBaseUrl: string;
+    apiImageBaseUrl: string;
   };
 };
 
@@ -22,6 +23,7 @@ const config: Record<"development" | "production", ConfigObject> = {
     nasa: {
       apiKey: process.env.DEV_NASA_API_KEY as string,
       apiBaseUrl: process.env.DEV_NASA_API_URL as string,
+      apiImageBaseUrl: process.env.DEV_NASA_IMAGES_API_URL as string,
     },
   },
   production: {
@@ -32,6 +34,7 @@ const config: Record<"development" | "production", ConfigObject> = {
     nasa: {
       apiKey: process.env.PROD_NASA_API_KEY as string,
       apiBaseUrl: process.env.PROD_NASA_API_URL as string,
+      apiImageBaseUrl: process.env.PROD_NASA_IMAGES_API_URL as string,
     },
   },
 };
