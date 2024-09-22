@@ -23,7 +23,11 @@ export type ApodObject = {
 
 export default class ApodService extends BaseService {
   constructor(config: ConfigObject) {
-    super(config, "planetary/apod");
+    super({
+      baseUrl: config.nasa.apiBaseUrl,
+      endpoints: "/planetary/apod",
+      apiKey: config.nasa.apiKey,
+    });
   }
 
   async fetchApod({

@@ -1,11 +1,17 @@
 import { ConfigObject } from "../config";
 
+export type BaseProps = {
+  baseUrl: string;
+  apiKey?: string;
+  endpoints: string;
+};
+
 export default class BaseService {
-  config: ConfigObject;
   baseUrl: string;
 
-  constructor(config: ConfigObject, endpoints: string) {
-    this.config = config;
-    this.baseUrl = `${config.nasa.apiBaseUrl}/${endpoints}?api_key=${config.nasa.apiKey}`;
+  constructor({ baseUrl, apiKey, endpoints }: BaseProps) {
+    this.baseUrl = apiKey
+      ? `${baseUrl}${endpoints}?api_key=${apiKey}`
+      : `${baseUrl}${endpoints}`;
   }
 }
