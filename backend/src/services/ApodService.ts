@@ -79,29 +79,4 @@ export default class ApodService extends BaseService {
 
     return await axios.get(url.toString());
   }
-
-  async fetchApod({
-    date,
-    startDate,
-    endDate,
-    count,
-    thumbs,
-  }: ApodProp): Promise<ApodObject> {
-    var url = new URL(this.baseUrl);
-
-    date && url.searchParams.append("date", moment(date).format("YYYY-MM-DD"));
-    startDate &&
-      url.searchParams.append(
-        "start_date",
-        moment(startDate).format("YYYY-MM-DD")
-      );
-    endDate &&
-      url.searchParams.append("end_date", moment(endDate).format("YYYY-MM-DD"));
-    count && url.searchParams.append("count", count.toString());
-    thumbs && url.searchParams.append("thumbs", thumbs.toString());
-
-    const response = await fetch(url.toString(), { method: "GET" });
-
-    return (await response.json()) as Promise<ApodObject>;
-  }
 }

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { RouteProps } from "../routes";
 import { ApodQueryParam } from "../@types/page";
 import { AxiosError } from "axios";
@@ -28,7 +29,9 @@ const apodCtrl = ({ apodService }: RouteProps) => {
   ) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      return res.status(400).send({ errors: result.array() });
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send({ errors: result.array() });
     }
 
     const { date } = req.query;
@@ -36,12 +39,12 @@ const apodCtrl = ({ apodService }: RouteProps) => {
     return apodService
       .single({ date })
       .then((result) => {
-        return res.status(200).json(result.data);
+        return res.status(StatusCodes.OK).json(result.data);
       })
       .catch(function (error: AxiosError<ApodError>) {
         return next(
           new BadRequestError({
-            code: +(error.response?.data?.code || 400),
+            code: error.response?.status || StatusCodes.BAD_REQUEST,
             context: error.response?.data,
             logging: false,
           })
@@ -53,12 +56,12 @@ const apodCtrl = ({ apodService }: RouteProps) => {
     return apodService
       .today()
       .then((result) => {
-        return res.status(200).json(result.data);
+        return res.status(StatusCodes.OK).json(result.data);
       })
       .catch(function (error: AxiosError<ApodError>) {
         return next(
           new BadRequestError({
-            code: +(error.response?.data?.code || 400),
+            code: error.response?.status || StatusCodes.BAD_REQUEST,
             context: error.response?.data,
             logging: false,
           })
@@ -73,7 +76,9 @@ const apodCtrl = ({ apodService }: RouteProps) => {
   ) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      return res.status(400).send({ errors: result.array() });
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send({ errors: result.array() });
     }
 
     const { startDate, endDate } = req.query;
@@ -81,12 +86,12 @@ const apodCtrl = ({ apodService }: RouteProps) => {
     return apodService
       .dateRange({ startDate, endDate })
       .then((result) => {
-        return res.status(200).json(result.data);
+        return res.status(StatusCodes.OK).json(result.data);
       })
       .catch(function (error: AxiosError<ApodError>) {
         return next(
           new BadRequestError({
-            code: +(error.response?.data?.code || 400),
+            code: error.response?.status || StatusCodes.BAD_REQUEST,
             context: error.response?.data,
             logging: false,
           })

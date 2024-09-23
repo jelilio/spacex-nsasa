@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../errors/CustomError";
 import logger from "../lib/logger";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
 const DEFAULT_IDENTATION = 2;
 
@@ -34,6 +35,6 @@ export const errorHandler = (
   // Unhandled errors
   logger.error(JSON.stringify(err, null, DEFAULT_IDENTATION));
   return res
-    .status(500)
-    .send({ errors: [{ message: "Oops! Something went wrong" }] });
+    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+    .send({ errors: [{ message: ReasonPhrases.INTERNAL_SERVER_ERROR }] });
 };

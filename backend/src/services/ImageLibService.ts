@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from "axios";
 import { ConfigObject } from "../config";
 import BaseService from "./BaseService";
 
@@ -62,7 +63,7 @@ export default class ImageLibService extends BaseService {
     page,
     size,
     mediaType,
-  }: ImageLibProp): Promise<ImageLibObject> {
+  }: ImageLibProp): Promise<AxiosResponse<ImageLibObject>> {
     var url = new URL(`${this.baseUrl}/search`);
 
     q && url.searchParams.append("q", q);
@@ -72,6 +73,6 @@ export default class ImageLibService extends BaseService {
 
     const response = await fetch(url.toString(), { method: "GET" });
 
-    return (await response.json()) as Promise<ImageLibObject>;
+    return await axios.get(url.toString());
   }
 }
