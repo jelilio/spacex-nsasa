@@ -23,6 +23,7 @@ const appModule = (config: ConfigObject): Application => {
   }
 
   app.use("/", routes({ apodService, imageLibService }));
+
   app.use(errorHandler); // for error handling
 
   return app;

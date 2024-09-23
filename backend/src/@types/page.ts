@@ -10,3 +10,11 @@ export type SearchParam = {
 export type ImageSearchParam = {
   mediaType: string;
 } & SearchParam;
+
+export type ApodQueryParam = {
+  date?: Date;
+  startDate?: Date;
+  endDate?: Date;
+  count?: number;
+  thumbs?: boolean;
+};

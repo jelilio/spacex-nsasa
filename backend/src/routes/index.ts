@@ -13,7 +13,7 @@ const routerModule = (params: RouteProps) => {
   const router = express.Router();
 
   router.use("/api/apod", apodRoute(params));
-  router.use("/api/image-lib", imageLibRoute(params));
+  router.use("/api/imagelib", imageLibRoute(params));
 
   return router;
 };

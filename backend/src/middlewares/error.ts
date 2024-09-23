@@ -2,11 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../errors/CustomError";
 import logger from "../lib/logger";
 
+const DEFAULT_IDENTATION = 2;
+
+// error handler middleware
 export const errorHandler = (
   err: Error,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   // Handled errors
   if (err instanceof CustomError) {
@@ -20,7 +23,7 @@ export const errorHandler = (
             stack: err.stack,
           },
           null,
-          2
+          DEFAULT_IDENTATION
         )
       );
     }
@@ -29,8 +32,8 @@ export const errorHandler = (
   }
 
   // Unhandled errors
-  logger.error(JSON.stringify(err, null, 2));
+  logger.error(JSON.stringify(err, null, DEFAULT_IDENTATION));
   return res
     .status(500)
-    .send({ errors: [{ message: "Something went wrong" }] });
+    .send({ errors: [{ message: "Oops! Something went wrong" }] });
 };
