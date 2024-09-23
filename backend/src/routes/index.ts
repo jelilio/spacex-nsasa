@@ -1,6 +1,6 @@
 import express from "express";
 import ApodService from "../services/ApodService";
-import apodRoute from "./apod";
+import apodRoute from "./apods";
 import ImageLibService from "../services/ImageLibService";
 import imageLibRoute from "./imagelib";
 

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { RouteProps } from "..";
-import imageLibCtrl from "../../controllers/imagelib";
+import { RouteProps } from ".";
+import imageLibHandler from "../handlers/imagelib";
 
 const router = Router();
 
 const imageLibRoute = (params: RouteProps) => {
-  const { search } = imageLibCtrl(params);
+  const { search } = imageLibHandler(params);
 
   router.get("/", search);
 

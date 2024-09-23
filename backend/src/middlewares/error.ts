@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomError } from "../errors/CustomError";
+import BaseError from "../errors/BaseError";
 import logger from "../lib/logger";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
@@ -13,7 +13,7 @@ export const errorHandler = (
   _next: NextFunction
 ) => {
   // Handled errors
-  if (err instanceof CustomError) {
+  if (err instanceof BaseError) {
     const { statusCode, errors, logging } = err;
     if (logging) {
       logger.error(

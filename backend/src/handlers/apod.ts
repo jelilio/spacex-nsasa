@@ -21,7 +21,7 @@ export type ImageLibObject = {
   ) => void;
 };
 
-const apodCtrl = ({ apodService }: RouteProps) => {
+const apodHandler = ({ apodService }: RouteProps) => {
   const single = async (
     req: Request<{}, {}, {}, ApodQueryParam>,
     res: Response,
@@ -102,4 +102,4 @@ const apodCtrl = ({ apodService }: RouteProps) => {
   return { single, today, dateRange };
 };
 
-export default apodCtrl;
+export default apodHandler;

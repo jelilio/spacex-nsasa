@@ -1,6 +1,6 @@
-import { CustomError } from "./CustomError";
+import BaseError from "./BaseError";
 
-export default class BadRequestError extends CustomError {
+export default class BadRequestError extends BaseError {
   private static readonly _statusCode = 400;
   private readonly _code: number;
   private readonly _logging: boolean;

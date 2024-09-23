@@ -13,7 +13,7 @@ export type ImageLibObject = {
   ) => void;
 };
 
-const imageLibCtrl = ({ imageLibService }: RouteProps): ImageLibObject => {
+const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
   const search = async (
     req: Request<{}, {}, {}, ImageSearchParam>,
     res: Response,
@@ -39,4 +39,4 @@ const imageLibCtrl = ({ imageLibService }: RouteProps): ImageLibObject => {
   return { search };
 };
 
-export default imageLibCtrl;
+export default imageLibHandler;
