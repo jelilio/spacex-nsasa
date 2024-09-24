@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import AppLayout from "./layouts/AppLayout";
-import Gallery from "./pages/Gallery";
-import About from "./pages/About";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import AppLayout from './layouts/AppLayout';
+import Gallery from './pages/Gallery';
+import About from './pages/About';
 
 function App() {
   return (
