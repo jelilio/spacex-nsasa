@@ -18,3 +18,18 @@ export type ApodQueryParam = {
   count?: number;
   thumbs?: boolean;
 };
+
+export interface Paged<T> {
+  content: T[];
+  meta: MetaFields;
+  nextPage?: number;
+  previousPage?: number;
+}
+
+export interface MetaFields {
+  size: number;
+  page: number;
+  numberOfElements: number;
+  totalPages: number;
+  totalElements: number;
+}
