@@ -25,6 +25,12 @@ const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
   ) => {
     const { q, page, size, mediaType } = req.query;
 
+    if (!q && !mediaType) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send({ errors: { message: "Either q or mediaType is required" } });
+    }
+
     return imageLibService
       .search({ q, page, size, mediaType })
       .then((result) => {
@@ -54,11 +60,12 @@ const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
 
         return res.status(StatusCodes.OK).json(paged);
       })
-      .catch(function (error: AxiosError) {
+      .catch(function (error: AxiosError<{ reason: string }>) {
         return next(
           new BadRequestError({
             code: error.response?.status || StatusCodes.BAD_REQUEST,
             logging: false,
+            context: error.response?.data,
           })
         );
       });

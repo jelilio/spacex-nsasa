@@ -42,8 +42,8 @@ export interface Metadata {
 export interface Paged<T> {
   content: T[];
   meta: MetaFields;
-  nextPage?: number;
-  previousPage?: number;
+  nextPage: number;
+  previousPage: number;
 }
 
 export interface MetaFields {
