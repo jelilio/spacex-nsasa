@@ -15,6 +15,10 @@ export type ImageItem = {
   links: Link[];
 };
 
+export type AssetItem = {
+  href: string;
+};
+
 export type ImageItemData = {
   album: string[];
   center: string;
@@ -53,3 +57,9 @@ export interface MetaFields {
   totalPages: number;
   totalElements: number;
 }
+
+export type ImageAssetCollection = {
+  version: string;
+  href: string;
+  items: AssetItem[];
+};

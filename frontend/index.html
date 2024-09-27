@@ -5,8 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + TS</title>
+    <style>
+      .modal {
+        transition: opacity 0.25s ease;
+      }
+      body.modal-active {
+        overflow-x: hidden;
+        overflow-y: visible !important;
+      }
+      .opacity-95 {
+        opacity: 0.95;
+      }
+    </style>
   </head>
   <body>
+    <div id="modal"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

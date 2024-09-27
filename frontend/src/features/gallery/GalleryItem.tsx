@@ -1,11 +1,31 @@
 import { ImageItem } from '../../@types';
+import { useState } from 'react';
+import GalleryDetail from './GalleryDetail';
 
-export default function GalleryItem({ links, data }: ImageItem) {
+export default function GalleryItem({ links, href, data }: ImageItem) {
+  const [cartIsVisible, setCartIsVisible] = useState(false);
   const { title, media_type: type } = data[0];
+
+  function handleOpenCartClick() {
+    setCartIsVisible(true);
+  }
+
+  function handleCloseCartClick() {
+    setCartIsVisible(false);
+  }
 
   return (
     <div>
-      <div className="max-w-sm overflow-hidden rounded shadow-lg hover:shadow-gray-400">
+      {cartIsVisible && (
+        <GalleryDetail
+          item={{ href, links, data }}
+          onClose={handleCloseCartClick}
+        />
+      )}
+      <div
+        onClick={handleOpenCartClick}
+        className="max-w-sm cursor-pointer overflow-hidden rounded shadow-lg hover:shadow-gray-400"
+      >
         {(type === 'image' || type === 'video') && (
           <img
             src={links[0].href}
