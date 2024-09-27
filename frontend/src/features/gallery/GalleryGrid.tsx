@@ -5,12 +5,14 @@ import Button from '../../ui/Button';
 import GallerySearch from './GallerySearch';
 import { useGetImages } from './api/use-get-images';
 
+const FIRST_PAGE = 1;
+const PAGE_SIZE = 9;
+
 export default function GalleryGrid() {
-  const [size] = useState(9);
-  const [page] = useState(1);
-  const [query, setQuery] = useState('apollo');
-  const [debounceTimeout, setDebounceTimout] = useState<number>();
-  const [mediaTypes, setMediaTypes] = useState<string[]>([]);
+  const [size] = useState(PAGE_SIZE);
+  const [page] = useState(FIRST_PAGE);
+  const [query, setQuery] = useState('');
+  const [mediaTypes, setMediaTypes] = useState<string[]>(['image']);
 
   const {
     isLoading,
@@ -21,7 +23,6 @@ export default function GalleryGrid() {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-    refetch,
   } = useGetImages({ size, page, query, mediaTypes });
 
   const galleries: ImageItem[] =
@@ -29,21 +30,6 @@ export default function GalleryGrid() {
 
   const handleQueryChange = (value: string) => {
     setQuery(value);
-
-    refresh();
-  };
-
-  const refresh = () => {
-    clearTimeout(debounceTimeout);
-
-    const timeout = setTimeout(() => {
-      console.log('about to refresh');
-      console.log(mediaTypes);
-
-      refetch();
-    }, 500);
-
-    setDebounceTimout(timeout);
   };
 
   const handleMediaTypeChange = (name: string) => {
@@ -56,7 +42,6 @@ export default function GalleryGrid() {
         newState.push(name);
       }
 
-      console.log(newState);
       return newState;
     });
   };
@@ -98,6 +83,7 @@ export default function GalleryGrid() {
     <div>
       <GallerySearch
         query={query}
+        mediaTypes={mediaTypes}
         setQuery={handleQueryChange}
         setMediaType={handleMediaTypeChange}
       />
