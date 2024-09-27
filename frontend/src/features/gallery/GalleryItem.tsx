@@ -1,5 +1,5 @@
-import { ImageItem } from '../../@types';
 import { useState } from 'react';
+import { ImageItem } from '../../@types';
 import GalleryDetail from './GalleryDetail';
 
 export default function GalleryItem({ links, href, data }: ImageItem) {

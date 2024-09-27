@@ -4,6 +4,7 @@ import GalleryItem from './GalleryItem';
 import Button from '../../ui/Button';
 import GallerySearch from './GallerySearch';
 import { useGetImages } from './api/use-get-images';
+import Spinner from '../../ui/Spinner';
 
 const FIRST_PAGE = 1;
 const PAGE_SIZE = 9;
@@ -48,7 +49,7 @@ export default function GalleryGrid() {
 
   let result;
   if (isLoading) {
-    result = <p>Is Loading</p>;
+    result = <Spinner />;
   } else if (isFetched) {
     result = (
       <>
