@@ -13,6 +13,20 @@ export type ImageLibObject = {
   collection: ImageLibCollection;
 };
 
+export type ImageAssetObject = {
+  collection: ImageAssetCollection;
+};
+
+export type ImageAssetCollection = {
+  version: string;
+  href: string;
+  items: AssetItem[];
+};
+
+export type AssetItem = {
+  href: string;
+};
+
 export type ImageLibCollection = {
   version: string;
   href: string;
@@ -71,7 +85,17 @@ export default class ImageLibService extends BaseService {
     page && url.searchParams.append("page", page.toString());
     mediaType && url.searchParams.append("media_type", mediaType);
 
-    const response = await fetch(url.toString(), { method: "GET" });
+    return await axios.get(url.toString());
+  }
+
+  async asset({
+    nasaId,
+  }: {
+    nasaId: string;
+  }): Promise<AxiosResponse<ImageAssetObject>> {
+    var url = new URL(`${this.baseUrl}/asset/`);
+
+    url.pathname = nasaId && url.pathname.concat(nasaId);
 
     return await axios.get(url.toString());
   }

@@ -12,6 +12,11 @@ export type ImageLibObject = {
     res: Response,
     next: NextFunction
   ) => void;
+  asset: (
+    req: Request<{ nasaid: string }, {}, {}, {}>,
+    res: Response,
+    next: NextFunction
+  ) => void;
 };
 
 const FIRST_PAGE = 1;
@@ -71,7 +76,36 @@ const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
       });
   };
 
-  return { search };
+  const asset = async (
+    req: Request<{ nasaid: string }, {}, {}, {}>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { nasaid } = req.params;
+
+    if (!nasaid) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send({ errors: { message: "nasaid is required" } });
+    }
+
+    return imageLibService
+      .asset({ nasaId: nasaid })
+      .then((result) => {
+        return res.status(StatusCodes.OK).json(result.data.collection);
+      })
+      .catch(function (error: AxiosError<{ reason: string }>) {
+        return next(
+          new BadRequestError({
+            code: error.response?.status || StatusCodes.BAD_REQUEST,
+            logging: false,
+            context: error.response?.data,
+          })
+        );
+      });
+  };
+
+  return { search, asset };
 };
 
 export default imageLibHandler;

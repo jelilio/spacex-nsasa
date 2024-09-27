@@ -11,6 +11,10 @@ export type ImageSearchParam = {
   mediaType: string;
 } & SearchParam;
 
+export type ImageAssetParam = {
+  nasaid: string;
+};
+
 export type ApodQueryParam = {
   date?: Date;
   startDate?: Date;
