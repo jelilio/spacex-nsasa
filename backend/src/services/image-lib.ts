@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import { ConfigObject } from "../config";
-import BaseService from "./BaseService";
+import config, { ConfigObject } from "../config";
+import BaseService from "./base";
 
 export type ImageLibProp = {
   q?: string;
@@ -64,20 +64,32 @@ export interface Metadata {
   total_hits: number;
 }
 
-export default class ImageLibService extends BaseService {
-  constructor(config: ConfigObject) {
-    super({
-      baseUrl: config.nasa.apiImageBaseUrl,
-      endpoints: "",
-    });
-  }
+const ENDPOINT = "";
 
-  async search({
+export interface ImageLibService {
+  getSearchApi: ({
     q,
     page,
     size,
     mediaType,
-  }: ImageLibProp): Promise<AxiosResponse<ImageLibObject>> {
+  }: ImageLibProp) => Promise<ImageLibObject>;
+  getAssetApi: (nasaId: string) => Promise<ImageAssetObject>;
+}
+
+class ImageLibServiceImpl extends BaseService implements ImageLibService {
+  constructor() {
+    super({
+      baseUrl: config.nasa.apiImageBaseUrl,
+      endpoints: ENDPOINT,
+    });
+  }
+
+  async getSearchApi({
+    q,
+    page,
+    size,
+    mediaType,
+  }: ImageLibProp): Promise<ImageLibObject> {
     var url = new URL(`${this.baseUrl}/search`);
 
     q && url.searchParams.append("q", q);
@@ -85,18 +97,16 @@ export default class ImageLibService extends BaseService {
     page && url.searchParams.append("page", page.toString());
     mediaType && url.searchParams.append("media_type", mediaType);
 
-    return await axios.get(url.toString());
+    return await this.fetchData<ImageLibObject>(url);
   }
 
-  async asset({
-    nasaId,
-  }: {
-    nasaId: string;
-  }): Promise<AxiosResponse<ImageAssetObject>> {
+  async getAssetApi(nasaId: string): Promise<ImageAssetObject> {
     var url = new URL(`${this.baseUrl}/asset/`);
 
     url.pathname = nasaId && url.pathname.concat(nasaId);
 
-    return await axios.get(url.toString());
+    return await this.fetchData<ImageAssetObject>(url);
   }
 }
+
+export default ImageLibServiceImpl;

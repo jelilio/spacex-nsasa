@@ -1,8 +1,9 @@
 import express, { Application, Router, Request, Response } from "express";
+import config from "./config";
 
 const app: Application = express();
 var router: Router = Router();
-const port: number = 3000;
+const port = process.env.PORT || "3000";
 
 app.use(router);
 

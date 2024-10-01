@@ -1,28 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { RouteProps } from "../routes";
 import { ImageSearchParam, Paged } from "../@types/page";
 import { StatusCodes } from "http-status-codes";
-import { AxiosError } from "axios";
-import BadRequestError from "../errors/BadRequestError";
-import { ImageItem } from "../services/ImageLibService";
-
-export type ImageLibObject = {
-  search: (
-    req: Request<{}, {}, {}, ImageSearchParam>,
-    res: Response,
-    next: NextFunction
-  ) => void;
-  asset: (
-    req: Request<{ nasaid: string }, {}, {}, {}>,
-    res: Response,
-    next: NextFunction
-  ) => void;
-};
+import { getImageLibService } from "../services/service-injection";
+import { ImageItem } from "../services/image-lib";
 
 const FIRST_PAGE = 1;
 const PAGE_STEP = 1;
 
-const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
+const imageLibHandler = (imageLibService = getImageLibService()) => {
   const search = async (
     req: Request<{}, {}, {}, ImageSearchParam>,
     res: Response,
@@ -37,12 +22,12 @@ const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
     }
 
     return imageLibService
-      .search({ q, page, size, mediaType })
+      .getSearchApi({ q, page, size, mediaType })
       .then((result) => {
         const pageNumber = Number(page);
         const sizeNumber = Number(size);
 
-        const data = result.data;
+        const data = result;
         const content = data.collection.items;
         const numberOfElements = data.collection.items.length;
         const totalElements = data.collection.metadata.total_hits;
@@ -65,14 +50,8 @@ const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
 
         return res.status(StatusCodes.OK).json(paged);
       })
-      .catch(function (error: AxiosError<{ reason: string }>) {
-        return next(
-          new BadRequestError({
-            code: error.response?.status || StatusCodes.BAD_REQUEST,
-            logging: false,
-            context: error.response?.data,
-          })
-        );
+      .catch(function (error) {
+        return next(error);
       });
   };
 
@@ -90,18 +69,12 @@ const imageLibHandler = ({ imageLibService }: RouteProps): ImageLibObject => {
     }
 
     return imageLibService
-      .asset({ nasaId: nasaid })
+      .getAssetApi(nasaid)
       .then((result) => {
-        return res.status(StatusCodes.OK).json(result.data.collection);
+        return res.status(StatusCodes.OK).json(result.collection);
       })
-      .catch(function (error: AxiosError<{ reason: string }>) {
-        return next(
-          new BadRequestError({
-            code: error.response?.status || StatusCodes.BAD_REQUEST,
-            logging: false,
-            context: error.response?.data,
-          })
-        );
+      .catch(function (error) {
+        return next(error);
       });
   };
 

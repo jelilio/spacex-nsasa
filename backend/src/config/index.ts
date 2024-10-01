@@ -14,8 +14,19 @@ export type ConfigObject = {
   };
 };
 
-const config: Record<"development" | "production", ConfigObject> = {
+const config: Record<"development" | "production" | "test", ConfigObject> = {
   development: {
+    name: `${process.env.APP_NAME} [Devlopment]`,
+    logger: {
+      level: "info",
+    },
+    nasa: {
+      apiKey: process.env.DEV_NASA_API_KEY as string,
+      apiBaseUrl: process.env.DEV_NASA_API_URL as string,
+      apiImageBaseUrl: process.env.DEV_NASA_IMAGES_API_URL as string,
+    },
+  },
+  test: {
     name: `${process.env.APP_NAME} [Devlopment]`,
     logger: {
       level: "info",
@@ -39,6 +50,9 @@ const config: Record<"development" | "production", ConfigObject> = {
   },
 };
 
-const environment = process.env.NODE_ENV as "development" | "production";
+const environment = process.env.NODE_ENV as
+  | "development"
+  | "production"
+  | "test";
 
 export default config[environment || "development"];

@@ -1,19 +1,12 @@
 import express from "express";
-import ApodService from "../services/ApodService";
-import apodRoute from "./apods";
-import ImageLibService from "../services/ImageLibService";
-import imageLibRoute from "./imagelib";
+import imageLibRoute from "./image-lib";
+import apodRoute from "./apod";
 
-export type RouteProps = {
-  apodService: ApodService;
-  imageLibService: ImageLibService;
-};
-
-const routerModule = (params: RouteProps) => {
+const routerModule = () => {
   const router = express.Router();
 
-  router.use("/api/apod", apodRoute(params));
-  router.use("/api/imagelib", imageLibRoute(params));
+  router.use("/api/apod", apodRoute());
+  router.use("/api/imagelib", imageLibRoute());
 
   return router;
 };

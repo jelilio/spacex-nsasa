@@ -1,28 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { RouteProps } from "../routes";
+import { StatusCodes } from "http-status-codes";
+import { getApodService } from "../services/service-injection";
 import { ApodQueryParam } from "../@types/page";
-import { AxiosError } from "axios";
-import BadRequestError from "../errors/BadRequestError";
-import { ApodError } from "../services/ApodService";
 
-export type ImageLibObject = {
-  today: (req: Request, res: Response, next: NextFunction) => void;
-  single: (
-    req: Request<{}, {}, {}, ApodQueryParam>,
-    res: Response,
-    next: NextFunction
-  ) => void;
-  dateRange: (
-    req: Request<{}, {}, {}, ApodQueryParam>,
-    res: Response,
-    next: NextFunction
-  ) => void;
-};
+const apodHandler = (apodService = getApodService()) => {
+  const getToday = async (req: Request, res: Response, next: NextFunction) => {
+    return apodService
+      .getTodayApi()
+      .then((result) => {
+        return res.status(StatusCodes.OK).json(result);
+      })
+      .catch(function (error) {
+        return next(error);
+      });
+  };
 
-const apodHandler = ({ apodService }: RouteProps) => {
-  const single = async (
+  const getSingle = async (
     req: Request<{}, {}, {}, ApodQueryParam>,
     res: Response,
     next: NextFunction
@@ -36,40 +30,23 @@ const apodHandler = ({ apodService }: RouteProps) => {
 
     const { date } = req.query;
 
+    if (!date) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send({ errors: { message: "Wrong date format" } });
+    }
+
     return apodService
-      .single({ date })
+      .getSingleApi(date)
       .then((result) => {
-        return res.status(StatusCodes.OK).json(result.data);
+        return res.status(StatusCodes.OK).json(result);
       })
-      .catch(function (error: AxiosError<ApodError>) {
-        return next(
-          new BadRequestError({
-            code: error.response?.status || StatusCodes.BAD_REQUEST,
-            context: error.response?.data,
-            logging: false,
-          })
-        );
+      .catch(function (error) {
+        return next(error);
       });
   };
 
-  const today = async (req: Request, res: Response, next: NextFunction) => {
-    return apodService
-      .today()
-      .then((result) => {
-        return res.status(StatusCodes.OK).json(result.data);
-      })
-      .catch(function (error: AxiosError<ApodError>) {
-        return next(
-          new BadRequestError({
-            code: error.response?.status || StatusCodes.BAD_REQUEST,
-            context: error.response?.data,
-            logging: false,
-          })
-        );
-      });
-  };
-
-  const dateRange = async (
+  const getDateRamge = async (
     req: Request<{}, {}, {}, ApodQueryParam>,
     res: Response,
     next: NextFunction
@@ -83,23 +60,23 @@ const apodHandler = ({ apodService }: RouteProps) => {
 
     const { startDate, endDate } = req.query;
 
+    if (!startDate || !endDate) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send({ errors: { message: "Wrong date format" } });
+    }
+
     return apodService
-      .dateRange({ startDate, endDate })
+      .getDateRangeApi(startDate, endDate)
       .then((result) => {
-        return res.status(StatusCodes.OK).json(result.data);
+        return res.status(StatusCodes.OK).json(result);
       })
-      .catch(function (error: AxiosError<ApodError>) {
-        return next(
-          new BadRequestError({
-            code: error.response?.status || StatusCodes.BAD_REQUEST,
-            context: error.response?.data,
-            logging: false,
-          })
-        );
+      .catch(function (error) {
+        return next(error);
       });
   };
 
-  return { single, today, dateRange };
+  return { getToday, getSingle, getDateRamge };
 };
 
 export default apodHandler;

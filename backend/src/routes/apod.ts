@@ -1,14 +1,14 @@
-import { Router, Request, Response } from "express";
-import { RouteProps } from ".";
-import apodHandler from "../handlers/apod";
+import { Router } from "express";
 import { query } from "express-validator";
+import apodHandler from "../handlers/apod";
+import { getApodService } from "../services/service-injection";
 
 const router = Router();
 
-const apodRoute = (params: RouteProps) => {
-  const { single, today, dateRange } = apodHandler(params);
+const apodRouter = (apodService = getApodService()) => {
+  const { getToday, getSingle, getDateRamge } = apodHandler(apodService);
 
-  router.get("/", today);
+  router.get("/today", getToday);
   router.get(
     "/single",
     query("date")
@@ -16,7 +16,7 @@ const apodRoute = (params: RouteProps) => {
       .withMessage("date is required")
       .isDate({ format: "YYYY-MM-DD" })
       .withMessage("Not a valid date format"),
-    single
+    getSingle
   );
   router.get(
     "/date-range",
@@ -30,10 +30,10 @@ const apodRoute = (params: RouteProps) => {
       .withMessage("endDate is required")
       .isDate({ format: "YYYY-MM-DD" })
       .withMessage("Not a valid date format"),
-    dateRange
+    getDateRamge
   );
 
   return router;
 };
 
-export default apodRoute;
+export default apodRouter;
