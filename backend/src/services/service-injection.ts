@@ -1,5 +1,8 @@
 import ApodServiceImpl, { ApodService, FakeApodServiceImpl } from "./apod";
-import ImageLibServiceImpl, { ImageLibService } from "./image-lib";
+import ImageLibServiceImpl, {
+  ImageLibService,
+  FakeImageLibServiceImpl,
+} from "./image-lib";
 
 export function getApodService(): ApodService {
   return process.env.NODE_ENV === "test"
@@ -8,5 +11,7 @@ export function getApodService(): ApodService {
 }
 
 export function getImageLibService(): ImageLibService {
-  return new ImageLibServiceImpl();
+  return process.env.NODE_ENV === "test"
+    ? new FakeImageLibServiceImpl()
+    : new ImageLibServiceImpl();
 }

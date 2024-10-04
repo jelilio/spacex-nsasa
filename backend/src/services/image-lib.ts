@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import config, { ConfigObject } from "../config";
 import BaseService from "./base";
+import { imageLib } from "../../data/apod";
 
 export type ImageLibProp = {
   q?: string;
@@ -32,12 +33,13 @@ export type ImageLibCollection = {
   href: string;
   items: ImageItem[];
   metadata: Metadata;
+  links: Link[];
 };
 
 export type ImageItem = {
   href: string;
   data: ImageItemData[];
-  links: Link[];
+  links: ItemLink[];
 };
 
 export type ImageItemData = {
@@ -57,7 +59,12 @@ export type Link = {
   href: string;
   rel: string;
   prompt: string;
-  notfound: string;
+};
+
+export type ItemLink = {
+  href: string;
+  rel: string;
+  render?: string;
 };
 
 export interface Metadata {
@@ -106,6 +113,25 @@ class ImageLibServiceImpl extends BaseService implements ImageLibService {
     url.pathname = nasaId && url.pathname.concat(nasaId);
 
     return await this.fetchData<ImageAssetObject>(url);
+  }
+}
+
+export class FakeImageLibServiceImpl implements ImageLibService {
+  async getSearchApi({
+    q,
+    page,
+    size,
+    mediaType,
+  }: ImageLibProp): Promise<ImageLibObject> {
+    return new Promise(function (resolve, reject) {
+      return resolve(imageLib);
+    });
+  }
+
+  async getAssetApi(nasaId: string): Promise<ImageAssetObject> {
+    return new Promise(function (resolve, reject) {
+      return resolve(imageLib);
+    });
   }
 }
 
