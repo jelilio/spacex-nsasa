@@ -1,12 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { getApodToday } from './apod';
+import { getApodTodayOrSingle } from './apod';
+import { format } from 'date-fns';
 
 const QUERY_KEY_ASSET = 'apod-today';
 
-export function useGetApodToday() {
+function getKey(date: Date | null): string[] {
+  return date
+    ? [QUERY_KEY_ASSET, format(date, 'yyyy-MM-dd')]
+    : [QUERY_KEY_ASSET];
+}
+
+export function useGetApodToday(date: Date | null) {
   const queryResult = useQuery({
-    queryKey: [QUERY_KEY_ASSET],
-    queryFn: () => getApodToday(),
+    queryKey: getKey(date),
+    queryFn: () => getApodTodayOrSingle(date),
   });
 
   return {
