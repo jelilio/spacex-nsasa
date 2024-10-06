@@ -248,7 +248,7 @@ export default function DateSelector({
                     >
                       <div
                         onClick={setDateValue(d)}
-                        className={`cursor-pointer rounded-full text-center text-sm leading-loose leading-none transition duration-100 ease-in-out ${
+                        className={`cursor-pointer rounded-full text-center text-sm leading-loose transition duration-100 ease-in-out ${
                           isToday(d)
                             ? 'bg-blue-500 text-white'
                             : 'text-gray-700 hover:bg-blue-200'
