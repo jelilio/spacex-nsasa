@@ -4,9 +4,11 @@
   "description": "This web application that utilises NASA's Open APIs (https://api.nasa.gov/) to showcase space-related data",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc",
     "test": "jest",
-    "start:dev": "npx nodemon"
+    "start": "node src/index.ts",
+    "start:dev": "npx nodemon",
+    "vercel-build": "hello"
   },
   "keywords": [],
   "author": "Jelili Adesina",

@@ -7,7 +7,7 @@ import { Application } from "express";
 let server: Application;
 
 beforeAll(async () => {
-  server = webApp(config);
+  server = webApp;
 });
 
 describe("getTodayRoute", () => {
@@ -29,5 +29,17 @@ describe("getSingleRoute", () => {
       .expect(200);
 
     expect(res.body.date).toBe("2023-12-12");
+  });
+});
+
+describe("getDateRange", () => {
+  it("should return an error", async () => {
+    const res = await request(server)
+      .get(`/api/apod/date-range`)
+      .expect("Content-Type", /json/)
+      .expect(400);
+
+    // startDate and endDate are missing
+    expect(res.body.errors).toHaveLength(4);
   });
 });

@@ -7,7 +7,7 @@ import { Application } from "express";
 let server: Application;
 
 beforeAll(async () => {
-  server = webApp(config);
+  server = webApp;
 });
 
 describe("getSearchRoute", () => {

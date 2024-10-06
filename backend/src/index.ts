@@ -1,16 +1,52 @@
-import express, { Application, Router, Request, Response } from "express";
+import http from "http";
+import app from "./app";
 import config from "./config";
+import logger from "./lib/logger";
 
-const app: Application = express();
-var router: Router = Router();
+type Error = {
+  syscall: string;
+  code: string;
+};
+
+// const app = webApp(config);
+
+/**
+ * Get port from environment and store in Express.
+ */
 const port = process.env.PORT || "3000";
 
-app.use(router);
+app.set("port", port);
 
-router.get("/", function (req: Request, res: Response): void {
-  res.send("<h1>App Running</h1>");
+/**
+ * Create HTTP server and listen on the provided port
+ */
+const server = http.createServer(app);
+
+server.listen(port);
+
+server.on("listening", () => {
+  const addr = server.address();
+  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr?.port}`;
+  logger.info(`Listening on ${bind}`);
 });
 
-app.listen(port, () => {
-  console.log(`Server Running here 👉 http://localhost:${port}`);
+// Handle server errors
+server.on("error", (error: Error) => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case "EACCES":
+      logger.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+    case "EADDRINUSE":
+      logger.error(`${bind} is already in use`);
+      process.exit(1);
+    default:
+      logger.error(error);
+  }
 });

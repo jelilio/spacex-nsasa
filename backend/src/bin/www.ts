@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import http from "http";
-import webApp from "../app";
-import config from "../config";
+import app from "../app";
+// import config from "../config";
 import logger from "../lib/logger";
 
 type Error = {
@@ -10,7 +10,7 @@ type Error = {
   code: string;
 };
 
-const app = webApp(config);
+// const app = webApp(config);
 
 /**
  * Get port from environment and store in Express.
