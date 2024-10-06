@@ -6,6 +6,7 @@ This web application that utilises NASA's Open APIs (https://api.nasa.gov/) to s
 
 - [SpaceX](#spacex)
   - [Table of Contents](#table-of-contents)
+  - [Features](#features)
   - [Backend](#backend)
     - [Technologies](#technologies)
     - [Installation](#installation)
@@ -19,8 +20,16 @@ This web application that utilises NASA's Open APIs (https://api.nasa.gov/) to s
     - [Usage](#usage-1)
       - [Development](#development-1)
       - [Build](#build)
-      - [Features](#features)
   - [License](#license)
+
+## Features
+
+The user interface basically has two major pages,
+
+- the Gallery
+- the APOD (Astronomy Picture Of the Day).
+
+The Gallery page provide the user the option to search the NASA image library for images, videos and audio assets while the APOD provides the user to view a picture of the day depending on the selected date.
 
 ## Backend
 
@@ -150,15 +159,6 @@ The backend exposes the following endpoints
    ```bash
    npm run build
    ```
-
-#### Features
-
-The user interface basically has two major pages,
-
-- the Gallery
-- the APOD (Astronomy Picture Of the Day) pages.
-
-The Gallery page provide the user the option to search the NASA image library for images, videos and audio assets while the APOD provides the user to view a picture of the day depending on the selected date.
 
 ## License
 
