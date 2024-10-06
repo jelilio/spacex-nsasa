@@ -54,8 +54,8 @@ export default function Header() {
             </button>
           </div>
           <div className="hidden lg:flex lg:justify-end lg:gap-x-12">
-            {menuItem({ to: '/', title: 'Home' })}
-            {menuItem({ to: 'gallery', title: 'Gallery' })}
+            {menuItem({ to: '/', title: 'Gallery' })}
+            {menuItem({ to: 'apod', title: 'APOD' })}
             {menuItem({ to: 'about', title: 'About' })}
           </div>
         </nav>
@@ -90,8 +90,8 @@ export default function Header() {
               <div className="mt-6 flow-root">
                 <div className="-my-6 divide-y divide-gray-500/10">
                   <div className="space-y-2 py-6">
-                    {menuItem({ to: '/', title: 'Home' })}
-                    {menuItem({ to: 'gallery', title: 'Gallery' })}
+                    {menuItem({ to: '/', title: 'Gallery' })}
+                    {menuItem({ to: 'apod', title: 'APOD' })}
                     {menuItem({ to: 'about', title: 'About' })}
                   </div>
                 </div>

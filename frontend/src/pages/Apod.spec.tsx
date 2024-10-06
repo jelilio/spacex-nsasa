@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Home from './Home';
+import Apod from './Apod';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('./../constants.ts', () => ({
@@ -11,11 +11,11 @@ describe('Home', () => {
   it('renders without crashing', () => {
     render(
       <QueryClientProvider client={queryClient}>
-        <Home />
+        <Apod />
       </QueryClientProvider>,
     );
 
-    const elem = screen.getByText('Home');
+    const elem = screen.getByText('Picture of the Day');
     expect(elem).toBeInTheDocument();
   });
 });
